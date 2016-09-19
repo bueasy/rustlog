@@ -1,0 +1,6 @@
+[package]
+name = "rustlog"
+version = "0.1.0"
+authors = ["wangyh3 <wangyh3@cicc.com.cn>"]
+
+[dependencies]
