@@ -1,8 +1,10 @@
+extern crate encoding;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
-
+use encoding::{Encoding, DecoderTrap};
+use encoding::all::GBK;
 struct MyLog {
     begin_time: String,
     end_time: String,
@@ -27,13 +29,25 @@ fn load_file(path: &str) -> String {
         Ok(file) => file,
     };
 
-    let mut s = String::new();
-    let mut result = String::new();
-    match file.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display, Error::description(&why)),
-        Ok(_) => result = result + &s,
-    }
-    return result;
+    // let mut s = String::new();
+    // let mut result = String::new();
+    let mut buffer = Vec::new();
+    // try!(file.read_to_end(&mut buffer));//TODO
+    file.read_to_end(&mut buffer);
+    // match file.read_to_string(&mut s) {
+    //     Err(why) => panic!("couldn't read {}: {}", display, Error::description(&why)),
+    //     Ok(_) => result = result + &s,
+    // }
+    // for str in buffer {
+    //     println!("the str is   {}", str);
+
+
+    // }
+    let mut chars = String::new();
+    GBK.decode_to(&buffer, DecoderTrap::Ignore, &mut chars);
+    // println!("the str is   {}", chars.to_string());
+
+    return chars.to_string();
 
 
 
